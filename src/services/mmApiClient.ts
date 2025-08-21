@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
+import logger from '../config/logger';
 import {
   MMApiRequest,
   MMVehicleInfoResponse,
@@ -20,6 +21,40 @@ class MMApiClient {
         'Content-Type': 'application/json',
       },
     });
+
+    this.client.interceptors.request.use(
+      (config: InternalAxiosRequestConfig) => {
+        logger.info('MM API Request', {
+          method: config.method,
+          url: config.url,
+          data: config.data,
+        });
+        return config;
+      },
+      (error) => {
+        logger.error('MM API Request Error', error);
+        return Promise.reject(error);
+      },
+    );
+
+    this.client.interceptors.response.use(
+      (response: AxiosResponse) => {
+        logger.info('MM API Response', {
+          status: response.status,
+          url: response.config.url,
+          data: response.data,
+        });
+        return response;
+      },
+      (error) => {
+        logger.error('MM API Response Error', {
+          status: error.response?.status,
+          message: error.message,
+          url: error.config?.url,
+        });
+        return Promise.reject(error);
+      },
+    );
   }
 
   async getVehicleInfo(vehicleId: string): Promise<MMVehicleInfoResponse> {
