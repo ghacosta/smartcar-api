@@ -9,6 +9,7 @@ import {
   SmartcarEnergyLevel,
   SmartcarEngineAction,
 } from "../types/api";
+import logger from '../config/logger';
 
 function extractValue<T>(field: MMField<T> | undefined | null): T | null {
   if (!field || typeof field !== "object" || field.value === undefined) {
@@ -55,6 +56,7 @@ function transformVehicleInfo(
       driveTrain: extractValue(data.driveTrain),
     };
   } catch (error) {
+    logger.error('Error transforming vehicle info', { error: (error as Error).message, mmResponse });
     throw error;
   }
 }
@@ -73,6 +75,7 @@ function transformSecurityStatus(
       locked: extractValue(door.locked),
     }));
   } catch (error) {
+    logger.error('Error transforming security status', { error: (error as Error).message, mmResponse });
     throw error;
   }
 }
@@ -93,6 +96,7 @@ function transformFuelLevel(mmResponse: MMEnergyResponse): SmartcarEnergyLevel {
       percent: tankLevel,
     };
   } catch (error) {
+    logger.error('Error transforming fuel level', { error: (error as Error).message, mmResponse });
     throw error;
   }
 }
@@ -113,6 +117,7 @@ function transformBatteryLevel(mmResponse: MMEnergyResponse): SmartcarEnergyLeve
       percent: batteryLevel,
     };
   } catch (error) {
+    logger.error('Error transforming battery level', { error: (error as Error).message, mmResponse });
     throw error;
   }
 }
@@ -128,6 +133,7 @@ function transformEngineAction(mmResponse: MMEngineActionResponse): SmartcarEngi
       status,
     };
   } catch (error) {
+    logger.error('Error transforming engine action', { error: (error as Error).message, mmResponse });
     throw error;
   }
 }
