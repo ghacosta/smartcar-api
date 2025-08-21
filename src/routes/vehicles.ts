@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction, Router } from 'express';
 import mmApiClient from '../services/mmApiClient';
 import {
   transformVehicleInfo,
-  // transformSecurityStatus,
+  transformSecurityStatus,
   // transformFuelLevel,
   // transformBatteryLevel,
   // transformEngineAction,
@@ -27,8 +27,8 @@ router.get('/:id/doors', async (req: Request, res: Response, next: NextFunction)
     const { id } = req.params;
   
     const mmResponse = await mmApiClient.getSecurityStatus(id);
-    // TODO: here should call a transform function to format response
-    res.json(mmResponse);
+    const transformedData = transformSecurityStatus(mmResponse);
+    res.json(transformedData);
   } catch (error) {
     console.error(error);
   }

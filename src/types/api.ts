@@ -50,3 +50,8 @@ export interface SmartcarVehicleInfo {
   doorCount: number | null;
   driveTrain: string | null;
 }
+
+export interface SmartcarDoor {
+  location: string | null;
+  locked: boolean | null;
+}
