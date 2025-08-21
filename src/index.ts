@@ -1,9 +1,9 @@
 import { Server } from 'http';
 import app from './app';
-// TODO: configure logger and use instead of console.info
+import logger from './config/logger';
 
 const PORT = process.env.PORT || 3000;
 
 const server: Server = app.listen(PORT, () => {
-  console.info(`Smartcar API server running on port ${PORT}`);
+  logger.info(`Smartcar API server running on port ${PORT}`);
 });

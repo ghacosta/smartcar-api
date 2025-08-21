@@ -8,10 +8,11 @@ import {
   transformEngineAction,
 } from '../utils/transformers';
 import logger from '../config/logger';
+import { validateVehicleId, validateEngineAction } from '../middleware/validations';
 
 const router: Router = express.Router();
 
-router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id', validateVehicleId, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
     logger.info('Getting vehicle info', { vehicleId: id });
@@ -24,7 +25,7 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-router.get('/:id/doors', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id/doors', validateVehicleId, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
     logger.info('Getting vehicle doors', { vehicleId: id });
@@ -37,7 +38,7 @@ router.get('/:id/doors', async (req: Request, res: Response, next: NextFunction)
   }
 });
 
-router.get('/:id/fuel', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id/fuel', validateVehicleId, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
     logger.info('Getting vehicle fuel level', { vehicleId: id });
@@ -50,7 +51,7 @@ router.get('/:id/fuel', async (req: Request, res: Response, next: NextFunction) 
   }
 });
 
-router.get('/:id/battery', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id/battery', validateVehicleId, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
     logger.info('Getting vehicle battery level', { vehicleId: id });
@@ -63,7 +64,7 @@ router.get('/:id/battery', async (req: Request, res: Response, next: NextFunctio
   }
 });
 
-router.post('/:id/engine', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/engine', validateVehicleId, validateEngineAction, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
     const { action } = req.body;

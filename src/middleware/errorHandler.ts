@@ -42,6 +42,19 @@ function errorHandler(err: Error, req: Request, res: Response, next: NextFunctio
   });
 }
 
+function notFoundHandler(req: Request, res: Response): Response<ErrorResponse> {
+  logger.warn('Route not found', {
+    method: req.method,
+    url: req.url,
+  });
+
+  return res.status(404).json({
+    error: 'Not Found',
+    message: 'Route not found',
+  });
+}
+
 export {
-  errorHandler
+  errorHandler,
+  notFoundHandler
 };
