@@ -59,3 +59,7 @@ export interface SmartcarDoor {
 export interface SmartcarEnergyLevel {
   percent: number | null;
 }
+
+export interface SmartcarEngineAction {
+  status: 'success' | 'error'
+}

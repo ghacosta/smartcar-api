@@ -5,7 +5,7 @@ import {
   transformSecurityStatus,
   transformFuelLevel,
   transformBatteryLevel,
-  // transformEngineAction,
+  transformEngineAction,
 } from '../utils/transformers';
 
 const router: Router = express.Router();
@@ -63,8 +63,8 @@ router.post('/:id/engine', async (req: Request, res: Response, next: NextFunctio
 
     const command = action === 'START' ? 'START_VEHICLE' : 'STOP_VEHICLE';
     const mmResponse = await mmApiClient.actionEngine(id, command);
-    // TODO: here should call a transform function to format response
-    res.json(mmResponse);
+    const transformedData = transformEngineAction(mmResponse);
+    res.json(transformedData);
   } catch (error) {
     console.error(error);
   }

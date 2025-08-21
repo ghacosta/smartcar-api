@@ -3,9 +3,11 @@ import {
   MMVehicleInfoResponse,
   MMSecurityResponse,
   MMEnergyResponse,
+  MMEngineActionResponse,
   SmartcarVehicleInfo,
   SmartcarDoor,
   SmartcarEnergyLevel,
+  SmartcarEngineAction,
 } from "../types/api";
 
 function extractValue<T>(field: MMField<T> | undefined | null): T | null {
@@ -115,10 +117,25 @@ function transformBatteryLevel(mmResponse: MMEnergyResponse): SmartcarEnergyLeve
   }
 }
 
+function transformEngineAction(mmResponse: MMEngineActionResponse): SmartcarEngineAction {
+  try {
+    if (!mmResponse || !mmResponse.actionResult) {
+      throw new Error('Invalid MM API engine action response format');
+    }
+
+    const status = mmResponse.actionResult.status === 'EXECUTED' ? 'success' : 'error';
+    return {
+      status,
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 export {
   transformVehicleInfo,
   transformSecurityStatus,
   transformFuelLevel,
   transformBatteryLevel,
-  // transformEngineAction,
+  transformEngineAction,
 };
