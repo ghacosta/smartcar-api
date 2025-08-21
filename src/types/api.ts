@@ -42,3 +42,11 @@ export type MMApiRequest = {
   responseType: 'JSON';
   command?: string;
 };
+
+// Smartcar specs types below
+export interface SmartcarVehicleInfo {
+  vin: string | null;
+  color: string | null;
+  doorCount: number | null;
+  driveTrain: string | null;
+}

@@ -1,5 +1,12 @@
 import express, { Request, Response, NextFunction, Router } from 'express';
 import mmApiClient from '../services/mmApiClient';
+import {
+  transformVehicleInfo,
+  // transformSecurityStatus,
+  // transformFuelLevel,
+  // transformBatteryLevel,
+  // transformEngineAction,
+} from '../utils/transformers';
 
 const router: Router = express.Router();
 
@@ -8,8 +15,8 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
 
     const mmResponse = await mmApiClient.getVehicleInfo(id);
-    // TODO: here should call a transform function to format response
-    res.json(mmResponse);
+    const transformedData = transformVehicleInfo(mmResponse);
+    res.json(transformedData);
   } catch (error) {
     console.error(error);
   }
