@@ -2,8 +2,10 @@ import {
   MMField,
   MMVehicleInfoResponse,
   MMSecurityResponse,
+  MMEnergyResponse,
   SmartcarVehicleInfo,
   SmartcarDoor,
+  SmartcarEnergyLevel,
 } from "../types/api";
 
 function extractValue<T>(field: MMField<T> | undefined | null): T | null {
@@ -73,10 +75,50 @@ function transformSecurityStatus(
   }
 }
 
+function transformFuelLevel(mmResponse: MMEnergyResponse): SmartcarEnergyLevel {
+  try {
+    if (!mmResponse || !mmResponse.data) {
+      throw new Error('Invalid MM API energy response format');
+    }
+
+    const tankLevel = extractValue(mmResponse.data.tankLevel);
+
+    if (tankLevel === null) {
+      throw new Error('Vehicle does not have fuel tank');
+    }
+
+    return {
+      percent: tankLevel,
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
+function transformBatteryLevel(mmResponse: MMEnergyResponse): SmartcarEnergyLevel {
+  try {
+    if (!mmResponse || !mmResponse.data) {
+      throw new Error('Invalid MM API energy response format');
+    }
+
+    const batteryLevel = extractValue(mmResponse.data.batteryLevel);
+
+    if (batteryLevel === null) {
+      throw new Error('Vehicle does not have battery');
+    }
+
+    return {
+      percent: batteryLevel,
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 export {
   transformVehicleInfo,
   transformSecurityStatus,
-  // transformFuelLevel,
-  // transformBatteryLevel,
+  transformFuelLevel,
+  transformBatteryLevel,
   // transformEngineAction,
 };

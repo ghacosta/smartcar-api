@@ -3,8 +3,8 @@ import mmApiClient from '../services/mmApiClient';
 import {
   transformVehicleInfo,
   transformSecurityStatus,
-  // transformFuelLevel,
-  // transformBatteryLevel,
+  transformFuelLevel,
+  transformBatteryLevel,
   // transformEngineAction,
 } from '../utils/transformers';
 
@@ -38,8 +38,8 @@ router.get('/:id/fuel', async (req: Request, res: Response, next: NextFunction) 
   try {
     const { id } = req.params;
     const mmResponse = await mmApiClient.getEnergyLevel(id);
-    // TODO: here should call a transform function to format response
-    res.json(mmResponse);
+    const transformedData = transformFuelLevel(mmResponse);
+    res.json(transformedData);
   } catch (error) {
     console.error(error);
   }
@@ -49,8 +49,8 @@ router.get('/:id/battery', async (req: Request, res: Response, next: NextFunctio
   try {
     const { id } = req.params;
     const mmResponse = await mmApiClient.getEnergyLevel(id);
-    // TODO: here should call a transform function to format response
-    res.json(mmResponse);
+    const transformedData = transformBatteryLevel(mmResponse);
+    res.json(transformedData);
   } catch (error) {
     console.error(error);
   }

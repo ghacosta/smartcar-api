@@ -55,3 +55,7 @@ export interface SmartcarDoor {
   location: string | null;
   locked: boolean | null;
 }
+
+export interface SmartcarEnergyLevel {
+  percent: number | null;
+}
